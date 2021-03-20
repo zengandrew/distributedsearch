@@ -16,6 +16,6 @@ module load anaconda3/2020.02
 
 conda activate ./env
 
-mpiexec -n 22 python -m mpi4py.futures pool_main.py
+mpiexec -n 10 python -m mpi4py.futures ./distributed-search/pool_main.py
 
 conda deactivate
