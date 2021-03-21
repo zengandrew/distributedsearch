@@ -5,7 +5,7 @@ import tempfile
 import time
 
 class ObjectiveFunctionWrapper():
-    def __init__(objective_function):
+    def __init__(self, objective_function):
         self.raw_objective_function = objective_function
 
     def __call__(self, params):
@@ -27,7 +27,7 @@ class ObjectiveFunctionWrapper():
         return objective, info
 
 class DistributedSearch():
-    def __init__(search_space, objective_function):
+    def __init__(self, search_space, objective_function):
         self.search_space = search_space
         self.objective_function = ObjectiveFunctionWrapper(objective_function)
 
@@ -37,7 +37,7 @@ class DistributedSearch():
         for i in range(size):
             config = {}
             for hyperparameter in self.search_space:
-                if instanceof(config[hyperparameter], list):
+                if isinstance(self.search_space[hyperparameter], range):
                     config[hyperparameter] = int(np.random.choice(self.search_space[hyperparameter]))
             configs.append(config)
 

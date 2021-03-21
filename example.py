@@ -9,7 +9,7 @@ import numpy as np
 import torch
 
 def objective_function(rank, working_dir, params):
-	images = Trajectory(train_traj)
+    images = Trajectory('train.traj')
 
     elements = np.unique([atom.symbol for atom in images[0]])
     cutoff = 6.0
@@ -61,7 +61,7 @@ def objective_function(rank, working_dir, params):
     result = {}
 
     with NoLogging():
-   		torch.set_num_threads(1)
+        torch.set_num_threads(1)
         trainer = AtomsTrainer(amptorch_config)
         trainer.train()
 
@@ -81,10 +81,10 @@ def objective_function(rank, working_dir, params):
     return result['mse']
 
 def main():
-	search_space = {
-	    'num_layers': range(3, 10),
-	    'num_nodes': range(5, 30)
-	}
+    search_space = {
+        'num_layers': range(3, 10),
+        'num_nodes': range(5, 30)
+    }
 
     search = DistributedSearch(search_space, objective_function)
     best_params, best_mse = search.get_minimum(trials=50)
