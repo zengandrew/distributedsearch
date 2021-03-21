@@ -8,8 +8,9 @@ import tempfile
 import time
 
 class ObjectiveFunctionWrapper:
-    def __init__(self, objective_function):
+    def __init__(self, objective_function, logging=False):
         self.raw_objective_function = objective_function
+        self.logging = logging
 
     def __call__(self, params):
         objective = None
@@ -30,12 +31,15 @@ class ObjectiveFunctionWrapper:
             'duration': duration
         }
 
+        if self.logging:
+            print('[{}] objective: {} | params: {} | duration: {}'.format(rank, objective, params, duration))
+
         return objective, info
 
 class DistributedSearch:
-    def __init__(self, search_space, objective_function):
+    def __init__(self, search_space, objective_function, logging=False):
         self.search_space = search_space
-        self.objective_function = ObjectiveFunctionWrapper(objective_function)
+        self.objective_function = ObjectiveFunctionWrapper(objective_function, logging)
 
     def _generate_trial_configurations(self, size):
         configs = []

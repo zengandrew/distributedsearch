@@ -79,7 +79,7 @@ def main():
         'num_nodes': range(5, 30)
     }
 
-    search = DistributedSearch(search_space, objective_function)
+    search = DistributedSearch(search_space, objective_function, logging=True)
     best_params, best_mse = search.get_minimum(trials=50)
 
     print('Best params', best_params)
