@@ -9,8 +9,15 @@ class NoLogging:
         self.stderr = sys.stderr
         sys.stderr = open(os.devnull, 'w') # tqdm printing
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
+    def __exit__(self, exc_type, exc_value, traceback):
         sys.stdout.close()
         sys.stdout = self.stdout
         sys.stderr.close()
         sys.stderr = self.stderr
+
+class RestoreWorkingDir:
+    def __enter__(self):
+        self.original_cwd = os.getcwd()
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        os.chdir(self.original_cwd)

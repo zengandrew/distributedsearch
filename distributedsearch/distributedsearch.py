@@ -1,10 +1,11 @@
 from mpi4py import MPI
 from mpi4py.futures import MPIPoolExecutor
 import numpy as np
+import os
 import tempfile
 import time
 
-class ObjectiveFunctionWrapper():
+class ObjectiveFunctionWrapper:
     def __init__(self, objective_function):
         self.raw_objective_function = objective_function
 
@@ -14,9 +15,12 @@ class ObjectiveFunctionWrapper():
 
         comm = MPI.COMM_WORLD
         rank = comm.Get_rank()
-        with tempfile.TemporaryDirectory(prefix='rank{}_'.format(rank)) as working_dir:
+        with tempfile.TemporaryDirectory(prefix='rank{}_'.format(rank)) as scratch_dir:
             start = time.time()
-            objective = self.raw_objective_function(rank, working_dir, params)
+
+            with RestoreWorkingDir():
+                objective = self.raw_objective_function(rank, scratch_dir, params)
+
             duration = time.time() - start
 
         info = {
@@ -26,7 +30,7 @@ class ObjectiveFunctionWrapper():
 
         return objective, info
 
-class DistributedSearch():
+class DistributedSearch:
     def __init__(self, search_space, objective_function):
         self.search_space = search_space
         self.objective_function = ObjectiveFunctionWrapper(objective_function)
@@ -53,7 +57,7 @@ class DistributedSearch():
         results = []
 
         with MPIPoolExecutor() as executor:
-            results_generator = executor.map(self.objective_function, configs)
+            results_generator = executor.map(self.objective_function, trial_configurations, unordered=True)
 
             for result in results_generator:
                 objective, info = result

@@ -8,7 +8,7 @@ from ase.io import Trajectory
 import numpy as np
 import torch
 
-def objective_function(rank, working_dir, params):
+def objective_function(rank, scratch_dir, params):
     images = Trajectory('train.traj')
 
     elements = np.unique([atom.symbol for atom in images[0]])
@@ -50,7 +50,7 @@ def objective_function(rank, working_dir, params):
         },
         'cmd': {
             'debug': False,
-            'run_dir': working_dir,
+            'run_dir': scratch_dir,
             'seed': 1,
             'identifier': 'rank{}'.format(rank),
             'verbose': False,
@@ -58,8 +58,7 @@ def objective_function(rank, working_dir, params):
         },
     }
 
-    result = {}
-
+    mse = None
     with NoLogging():
         torch.set_num_threads(1)
         trainer = AtomsTrainer(amptorch_config)
@@ -72,13 +71,7 @@ def objective_function(rank, working_dir, params):
 
         mse = np.mean((true_energies - pred_energies) ** 2)
 
-        result = {
-            'config': config,
-            'mse': mse,
-            'elapsed_time': (time.time() - start)
-        }
-
-    return result['mse']
+    return mse
 
 def main():
     search_space = {
