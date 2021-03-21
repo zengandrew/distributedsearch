@@ -16,7 +16,6 @@ module load anaconda3/2020.02
 
 conda activate amptorch
 
-cd distributed-search/
-mpiexec -n 10 python -m mpi4py.futures pool_main.py
+mpiexec -n 10 python -m mpi4py.futures example.py
 
 conda deactivate
