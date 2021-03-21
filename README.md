@@ -1,4 +1,4 @@
-# distributed-search
+# distributedsearch
 Distributed hyperparameter search
 
 ## Setup
@@ -13,6 +13,6 @@ conda install mpi4py
 
 ## Usage (PBS)
 ```
-git clone https://github.com/zengandrew/distributed-search.git
+git clone https://github.com/zengandrew/distributedsearch.git
 qsub job.pbs
 ```
