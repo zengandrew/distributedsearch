@@ -38,6 +38,12 @@ if __name__ == '__main__':
     print('Best params:', best_params) # Best params: {'x': 3}
     print('Min error:', min_error)     # Min error: 0
 ```
+To run:
+```
+git clone https://github.com/zengandrew/distributedsearch.git
+cd distributedsearch/examples
+mpiexec -n 2 python -m mpi4py.futures example.py
+```
 
 ## AMPtorch Example (PBS)
 ```
