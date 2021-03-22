@@ -7,6 +7,17 @@ mpi4py
 numpy
 ```
 
+## Installation
+```
+pip install git+https://github.com/zengandrew/distributedsearch.git
+```
+or
+```
+git clone https://github.com/zengandrew/distributedsearch.git
+cd distributedsearch/
+pip install .
+```
+
 ## Example
 ```python
 from distributedsearch import DistributedSearch
@@ -28,7 +39,7 @@ if __name__ == '__main__':
     print('Min error:', min_error)     # Min error: 0
 ```
 
-## AMPtorch example (PBS)
+## AMPtorch Example (PBS)
 ```
 git clone https://github.com/zengandrew/distributedsearch.git
 cd distributedsearch/
