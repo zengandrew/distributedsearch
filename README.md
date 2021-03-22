@@ -32,5 +32,5 @@ if __name__ == '__main__':
 ```
 git clone https://github.com/zengandrew/distributedsearch.git
 cd distributedsearch/
-qsub job.pbs
+qsub example.pbs
 ```
