@@ -1,12 +1,6 @@
 # distributed search
 Distributed hyperparameter search for use on a MPI-backed cluster. Uses MPI for Python.
 
-## Dependencies
-```
-mpi4py
-numpy
-```
-
 ## Installation
 ```
 pip install git+https://github.com/zengandrew/distributedsearch.git
