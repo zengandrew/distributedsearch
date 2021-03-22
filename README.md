@@ -1,18 +1,15 @@
 # distributedsearch
-Distributed hyperparameter search
+Distributed hyperparameter search for use on a MPI-backed cluster. Uses MPI for Python.
 
-## Setup
+## Dependencies
 ```
-git clone https://github.com/ulissigroup/amptorch.git
-cd amptorch
-conda env create -f env_cpu.yml
-conda activate amptorch
-pip install -e .
-conda install mpi4py
+mpi4py
+numpy
 ```
 
 ## Usage (PBS)
 ```
 git clone https://github.com/zengandrew/distributedsearch.git
+cd distributedsearch/
 qsub job.pbs
 ```
