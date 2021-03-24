@@ -40,6 +40,8 @@ mpiexec -n 2 python -m mpi4py.futures example.py
 ```
 
 ## AMPtorch Example (PBS)
+Make sure to adjust the compiler and MPI modules according to your setup (by default, this example loads GCC and Open MPI).
+Distributedsearch does not depend on a specific implementation; just make sure it is consistent.
 ```
 git clone https://github.com/zengandrew/distributedsearch.git
 cd distributedsearch/
