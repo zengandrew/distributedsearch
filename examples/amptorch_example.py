@@ -5,14 +5,11 @@ from amptorch.ase_utils import AMPtorch
 from amptorch.descriptor.Gaussian import GaussianDescriptorSet
 from amptorch.trainer import AtomsTrainer
 from ase.io import Trajectory
+import os
 import numpy as np
 import torch
 
-def objective_function(rank, scratch_dir, params):
-    train_images = Trajectory('train.traj')
-    test_images = Trajectory('test.traj')
-
-    elements = np.unique([atom.symbol for atom in train_images[0]])
+def get_gaussian_descriptor_set(elements):
     cutoff = 6.0
     cosine_cutoff_params = {'cutoff_func': 'cosine'}
     gds = GaussianDescriptorSet(elements, cutoff, cosine_cutoff_params)
@@ -25,6 +22,17 @@ def objective_function(rank, scratch_dir, params):
     g4_zetas = [1.0, 4.0, 4.0, 16.0]
     g4_gammas = [1.0, 1.0, -1.0, -1.0]
     gds.batch_add_descriptors(4, g4_etas, g4_zetas, g4_gammas)
+
+    return gds
+
+def objective_function(rank, scratch_dir, params):
+    train_images = Trajectory('train.traj')
+    test_images = Trajectory('test.traj')
+
+    if os.path.isdir(os.path.join(os.getcwd(), ''))
+
+    elements = np.unique([atom.symbol for atom in train_images[0]])
+    gds = get_gaussian_descriptor_set(elements)
 
     amptorch_config = {
         'model': {
