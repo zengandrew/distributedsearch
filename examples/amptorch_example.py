@@ -9,9 +9,10 @@ import numpy as np
 import torch
 
 def objective_function(rank, scratch_dir, params):
-    images = Trajectory('train.traj')
+    train_images = Trajectory('train.traj')
+    test_images = Trajectory('test.traj')
 
-    elements = np.unique([atom.symbol for atom in images[0]])
+    elements = np.unique([atom.symbol for atom in train_images[0]])
     cutoff = 6.0
     cosine_cutoff_params = {'cutoff_func': 'cosine'}
     gds = GaussianDescriptorSet(elements, cutoff, cosine_cutoff_params)
@@ -42,10 +43,10 @@ def objective_function(rank, scratch_dir, params):
             'gpus': 0,
         },
         'dataset': {
-            'raw_data': images,
+            'raw_data': train_images,
             'val_split': 0.1,
             'fp_params': gds,
-            'save_fps': False,
+            'save_fps': True,
             'scaling': {'type': 'normalize', 'range': (0, 1)},
         },
         'cmd': {
@@ -60,15 +61,15 @@ def objective_function(rank, scratch_dir, params):
 
     mse = None
     with NoLogging():
+        # train on train_images.traj
         torch.set_num_threads(1)
         trainer = AtomsTrainer(amptorch_config)
         trainer.train()
 
-        predictions = trainer.predict(images)
-
-        true_energies = np.array([image.get_potential_energy() for image in images])
+        # evaluate on test_images.traj
+        predictions = trainer.predict(test_images)
+        true_energies = np.array([image.get_potential_energy() for image in test_images])
         pred_energies = np.array(predictions['energy'])
-
         mse = np.mean((true_energies - pred_energies) ** 2)
 
     return mse
